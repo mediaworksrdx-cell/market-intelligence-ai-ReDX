@@ -1,4 +1,0 @@
-com.example.marketintelligence.test.app-androidTest-0 /root/AndroidStudioProjects/Market-Intelligence-Ai-Android/app/build/generated/res/resValues/androidTest/debug
-com.example.marketintelligence.test.app-mergeDebugAndroidTestResources-1 /root/AndroidStudioProjects/Market-Intelligence-Ai-Android/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
-com.example.marketintelligence.test.app-mergeDebugAndroidTestResources-2 /root/AndroidStudioProjects/Market-Intelligence-Ai-Android/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
-com.example.marketintelligence.test.app-merged_res-3 /root/AndroidStudioProjects/Market-Intelligence-Ai-Android/app/build/intermediates/merged_res/debugAndroidTest
