@@ -4,34 +4,36 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
+@Serializable
 data class AnchorPoint(val timestamp: Long, val price: Float)
 
 // --- Drawing Tool Models ---
+@Serializable
 sealed class DrawingTool {
-    abstract val type: String
-
+    @Serializable
+    @SerialName("Trendline")
     data class Trendline(
         val start: AnchorPoint,
         val end: AnchorPoint
-    ) : DrawingTool() {
-        override val type: String = "Trendline"
-    }
+    ) : DrawingTool()
 
+    @Serializable
+    @SerialName("FibonacciRetracement")
     data class FibonacciRetracement(
         val start: AnchorPoint,
         val end: AnchorPoint
-    ) : DrawingTool() {
-        override val type: String = "FibonacciRetracement"
-    }
+    ) : DrawingTool()
 }
 
 // --- Room Entity ---
 @Entity(tableName = "drawings")
 @TypeConverters(DrawingConverters::class)
+@Serializable
 data class Drawing(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val tool: DrawingTool
@@ -39,25 +41,15 @@ data class Drawing(
 
 // --- Room Type Converter ---
 class DrawingConverters {
-    private val gson = Gson()
+    private val json = Json { classDiscriminator = "type" }
 
     @TypeConverter
     fun fromDrawingTool(tool: DrawingTool): String {
-        // Add a 'type' property to the JSON for robust deserialization
-        val jsonObject = gson.toJsonTree(tool).asJsonObject
-        jsonObject.addProperty("type", tool.type)
-        return jsonObject.toString()
+        return json.encodeToString(tool)
     }
 
     @TypeConverter
-    fun toDrawingTool(json: String): DrawingTool {
-        val jsonObject = JsonParser.parseString(json).asJsonObject
-        val type = jsonObject.get("type")?.asString
-
-        return when (type) {
-            "Trendline" -> gson.fromJson(json, DrawingTool.Trendline::class.java)
-            "FibonacciRetracement" -> gson.fromJson(json, DrawingTool.FibonacciRetracement::class.java)
-            else -> throw IllegalArgumentException("Unknown drawing tool type: $type")
-        }
+    fun toDrawingTool(jsonString: String): DrawingTool {
+        return json.decodeFromString(jsonString)
     }
 }

@@ -4,7 +4,8 @@ package com.example.marketintelligence.data.source.local
 import androidx.room.*
 import com.example.marketintelligence.data.model.AiTradeSignal
 import com.example.marketintelligence.data.model.ExecutedTradeEntity
-import com.google.gson.Gson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 @Dao
 interface ExecutedTradeDao {
@@ -12,17 +13,17 @@ interface ExecutedTradeDao {
     suspend fun insertTrade(trade: ExecutedTradeEntity)
 }
 
-// Type converter to store the complex AiTradeSignal object as a JSON string in the database
+// This TypeConverter now uses Kotlinx Serialization instead of Gson.
 class DatabaseTypeConverters {
-    private val gson = Gson()
+    private val json = Json { ignoreUnknownKeys = true } // Configure the serializer
 
     @TypeConverter
     fun fromAiTradeSignal(signal: AiTradeSignal): String {
-        return gson.toJson(signal)
+        return json.encodeToString(signal)
     }
 
     @TypeConverter
-    fun toAiTradeSignal(json: String): AiTradeSignal {
-        return gson.fromJson(json, AiTradeSignal::class.java)
+    fun toAiTradeSignal(jsonString: String): AiTradeSignal {
+        return json.decodeFromString<AiTradeSignal>(jsonString)
     }
 }

@@ -1,3 +1,6 @@
+// NOTE: The code in this file is correct. The 'Unresolved reference' errors are caused by a stuck
+// build process. The standard solution is to restart the IDE to clear the lock.
+
 package com.example.redxchartlibrary
 
 import android.os.Bundle

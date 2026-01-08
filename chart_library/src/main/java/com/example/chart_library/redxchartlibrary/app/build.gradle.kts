@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -55,9 +56,10 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
-    // Networking
+    // Networking (Using Kotlinx Serialization)
     implementation(libs.squareup.retrofit)
-    implementation(libs.squareup.converter.gson)
+    implementation(libs.jakewharton.retrofit.converter.kotlinx.serialization)
+    implementation(libs.jetbrains.kotlinx.serialization.json)
     implementation(libs.squareup.okhttp)
     implementation(libs.squareup.logging.interceptor)
 

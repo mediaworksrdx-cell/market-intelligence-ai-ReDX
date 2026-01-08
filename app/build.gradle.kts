@@ -55,7 +55,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.3" // Aligned to Kotlin 1.9.10
+        kotlinCompilerExtensionVersion = "1.5.3"
     }
     packaging {
         resources {
@@ -93,5 +93,6 @@ dependencies {
     implementation("com.google.accompanist:accompanist-swiperefresh:0.32.0")
     implementation("com.google.ai.client.generativeai:generativeai:0.2.2")
     debugImplementation("androidx.compose.ui:ui-tooling")
-    implementation("com.google.code.gson:gson:2.10.1")
+    
+    // REMOVED: implementation("com.google.code.gson:gson:2.10.1")
 }
